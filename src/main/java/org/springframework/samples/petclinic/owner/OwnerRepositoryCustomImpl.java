@@ -29,28 +29,3 @@ public class OwnerRepositoryCustomImpl implements OwnerRepository {
 	    	
 		return query.getResultList();
 	}
-
-	@Override
-	public Owner findById(Integer id) {
-
-	    	String sqlQuery = "SELECT owner FROM Owner owner left join fetch owner.pets WHERE owner.id = '" + id +"'";
-	    	
-	    	TypedQuery<Owner> query = this.entityManager.createQuery(sqlQuery, Owner.class);
-	
-	    	return query.getSingleResult();
-	}
-
-	@Override
-	public void save(Owner owner) {
-	
-		// If the object already exists, then we can't directly use the detached object in persist.
-		if (owner.getId() != null) {
-			this.entityManager.merge(owner);
-			return;
-		}
-		
-		this.entityManager.persist(owner);
-	}
-
-}
-
